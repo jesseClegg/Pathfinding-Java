@@ -29,6 +29,8 @@ public class aStar {
     }
 
     public int findPath(int [][] maze, int [] start, int [] goal){
+        System.out.println("MAZE TO SOLVE  ");
+        printMaze(maze);
         int totalNodeVisited=0;
         int shortestPathDistance=-1;
         int hasBeenExplored=4;
@@ -45,31 +47,27 @@ public class aStar {
         do {
             totalNodeVisited++;
             aStarNode currentNode=pQ.poll();
-
-            i= currentNode.getI();;
-            j= currentNode.getJ();;
-            System.out.println("current node: "+currentNode.toString());
+            i=currentNode.getI();;
+            j=currentNode.getJ();;
             visited[i][j]=1;
             maze[i][j]=hasBeenExplored;
-            printMaze(maze);
 
             //Goal location has been reached
             if(i==maze.length-1&&j==maze[i].length-1){
                 shortestPathDistance= currentNode.getDistanceFromStart()+1;
                 currentNode.setDistanceFromStart(shortestPathDistance);
-                System.out.println("##############  EXIT FOUND  ##############");
+                System.out.println("EXIT FOUND");
                 System.out.println("total nodes visited= ["+totalNodeVisited+"]");
+                printMaze(maze);
                 return totalNodeVisited;
             }
 
             //go right
             if (j < maze[i].length - 1 && maze[i][j + 1] != 1) {
-                //System.out.println("we can ge right");
                 StringBuilder tempRi = new StringBuilder();
                 StringBuilder tempRj = new StringBuilder();
                 tempRi.append(i);
                 tempRj.append(j + 1);
-                //System.out.println("right from q is = " + tempRi+" ,"+tempRj);
                 if(visited[i][j+1]==0){
                     aStarNode temp = new aStarNode(i, j+1, goal, currentNode.getDistanceFromStart()+1);
                     pQ.add(temp);
@@ -78,12 +76,10 @@ public class aStar {
 
             //go down
             if (i < maze.length - 1 && maze[i + 1][j] != 1) {
-                //System.out.println("we can go down");
                 StringBuilder tempDi = new StringBuilder();
                 StringBuilder tempDj = new StringBuilder();
                 tempDi.append(i + 1);
                 tempDj.append(j);
-                //System.out.println("down from q is = " + tempDi + ", " + tempDj);
                 if(visited[i+1][j]==0){
                     aStarNode temp = new aStarNode(i+1, j, goal, currentNode.getDistanceFromStart()+1);
                     pQ.add(temp);
@@ -92,12 +88,10 @@ public class aStar {
 
             //go left
             if (j > 0 && maze[i][j - 1] != 1) {
-                //System.out.println("we can ge right");
                 StringBuilder tempRi = new StringBuilder();
                 StringBuilder tempRj = new StringBuilder();
                 tempRi.append(i);
                 tempRj.append(j - 1);
-                //System.out.println("right from q is = " + tempRi+" ,"+tempRj);
                 if(visited[i][j-1]==0){
                     aStarNode temp = new aStarNode(i, j-1, goal, currentNode.getDistanceFromStart()+1);
                     pQ.add(temp);
@@ -106,23 +100,21 @@ public class aStar {
 
             //go up
             if (i > 0 && maze[i - 1][j] != 1) {
-                //System.out.println("we can go up");
                 StringBuilder tempUi = new StringBuilder();
                 StringBuilder tempUj = new StringBuilder();
                 tempUi.append(i - 1);
                 tempUj.append(j);
-                //System.out.println("up from q is = " + tempUi+", "+tempUj);
                 if(visited[i-1][j]==0){
                     aStarNode temp = new aStarNode(i-1, j, goal, currentNode.getDistanceFromStart()+1);
                     pQ.add(temp);
                 }
 
             }
-            //System.out.println("*********************");
-        }while(!pQ.isEmpty());//end while
+
+        }while(!pQ.isEmpty());
 
         System.out.println("ERROR: UNABLE TO FIND EXIT");
-        return  -1;
+        return -1;
     }
 
     public void printMaze (int [][] maze){
